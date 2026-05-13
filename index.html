@@ -731,11 +731,25 @@ function initSocket() {
 
   socket.on('room:users', ({ users }) => {
     document.getElementById('roomUserCount').textContent = users.length;
+
+    // Yeni gelenleri ekle
     users.forEach(u => {
       if (u.socketId !== mySocketId && !peers.has(u.socketId)) {
         peers.set(u.socketId, u);
       }
     });
+
+    // Artık odada olmayanları temizle
+    const activeSocketIds = new Set(users.map(u => u.socketId));
+    peers.forEach((peer, socketId) => {
+      if (!activeSocketIds.has(socketId)) {
+        peers.delete(socketId);
+        // Agora UID'siyle hücreyi bul ve sil
+        const cell = document.getElementById('cell-' + peer.uid);
+        if (cell) cell.remove();
+      }
+    });
+
     renderVideoGrid();
   });
 
@@ -823,8 +837,7 @@ async function joinAgoraChannel(roomId, uid) {
   });
 
   agoraClient.on('user-left', (user) => {
-    const cell = document.getElementById('cell-' + user.uid);
-    if (cell) cell.remove();
+    removePeerCell(user.uid);
   });
 
   const res = await fetch(`${BACKEND}/token?channel=${roomId}&uid=${uid}`);
