@@ -9,583 +9,121 @@
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --bg: #f5f2eb;
-  --ink: #0e0e0e;
-  --ink2: #3a3a3a;
-  --ink3: #888;
-  --lime: #c8f53a;
-  --lime-dark: #a3cf1a;
-  --surface: #edeae1;
-  --border: rgba(14,14,14,0.12);
-  --border-strong: rgba(14,14,14,0.25);
+  --bg: #f5f2eb; --ink: #0e0e0e; --ink2: #3a3a3a; --ink3: #888;
+  --lime: #c8f53a; --lime-dark: #a3cf1a;
+  --surface: #edeae1; --border: rgba(14,14,14,0.12); --border-strong: rgba(14,14,14,0.25);
 }
-
-body {
-  font-family: 'Bricolage Grotesque', sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.25rem 2.5rem;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 50;
-}
-
-.logo {
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  color: var(--ink);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.logo-mark {
-  display: inline-block;
-  width: 22px; height: 22px;
-  background: var(--lime);
-  border-radius: 4px;
-  position: relative;
-}
-
-.logo-mark::after {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  background: var(--ink);
-  border-radius: 2px;
-  animation: blink 1.8s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; } 50% { opacity: 0; }
-}
-
-.nav-stat {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--ink3);
-}
-
+body { font-family: 'Bricolage Grotesque', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2.5rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 50; }
+.logo { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.04em; color: var(--ink); display: flex; align-items: center; gap: 6px; }
+.logo-mark { display: inline-block; width: 22px; height: 22px; background: var(--lime); border-radius: 4px; position: relative; }
+.logo-mark::after { content: ''; position: absolute; inset: 4px; background: var(--ink); border-radius: 2px; animation: blink 1.8s step-end infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.nav-stat { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--ink3); }
 .nav-stat span { color: var(--ink); font-weight: 700; }
 
-#landingPage {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 5rem 2.5rem 3rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  align-items: start;
-}
+#landingPage { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.hero-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--ink3); margin-bottom: 1.5rem; text-transform: uppercase; }
+h1 { font-size: clamp(2.8rem, 4.5vw, 4.8rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; margin-bottom: 2rem; }
+h1 em { font-style: normal; background: var(--lime); padding: 0 6px 2px; border-radius: 4px; }
+.hero-body { font-size: 1rem; line-height: 1.7; color: var(--ink2); max-width: 380px; margin-bottom: 2.5rem; }
 
-.hero-eyebrow {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: var(--ink3);
-  margin-bottom: 1.5rem;
-  text-transform: uppercase;
-}
-
-h1 {
-  font-size: clamp(2.8rem, 4.5vw, 4.8rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
-  margin-bottom: 2rem;
-}
-
-h1 em {
-  font-style: normal;
-  background: var(--lime);
-  padding: 0 6px 2px;
-  border-radius: 4px;
-}
-
-.hero-body {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--ink2);
-  max-width: 380px;
-  margin-bottom: 2.5rem;
-}
-
-.btn-start {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 1rem 1.75rem;
-  background: var(--ink);
-  color: var(--bg);
-  border: none;
-  border-radius: 8px;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.12s, background 0.12s;
-  letter-spacing: -0.01em;
-}
-
+.btn-start { display: inline-flex; align-items: center; gap: 10px; padding: 1rem 1.75rem; background: var(--ink); color: var(--bg); border: none; border-radius: 8px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: transform 0.12s, background 0.12s; letter-spacing: -0.01em; }
 .btn-start:hover { background: var(--lime-dark); color: var(--ink); }
 .btn-start:active { transform: scale(0.98); }
 .btn-start.hidden { display: none; }
-
-.btn-arrow {
-  width: 20px; height: 20px;
-  background: var(--lime);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  color: var(--ink);
-}
+.btn-arrow { width: 20px; height: 20px; background: var(--lime); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: var(--ink); }
 
 .waiting { display: none; flex-direction: column; gap: 1rem; }
 .waiting.active { display: flex; }
-
-.wait-card {
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: 10px;
-  padding: 1.25rem;
-}
-
-.wait-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-}
-
-.wait-label-sm {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--ink3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 4px;
-}
-
-.wait-num {
-  font-size: 2.2rem;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
+.wait-card { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 10px; padding: 1.25rem; }
+.wait-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+.wait-label-sm { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ink3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.wait-num { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
 .wait-num span { color: var(--ink3); font-weight: 300; }
-
 .slots { display: flex; gap: 6px; }
-
-.slot {
-  width: 36px; height: 36px;
-  border-radius: 6px;
-  border: 1.5px solid var(--border-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.6rem;
-  font-weight: 700;
-  background: var(--bg);
-  transition: background 0.3s, border-color 0.3s;
-}
-
+.slot { width: 36px; height: 36px; border-radius: 6px; border: 1.5px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 0.6rem; font-weight: 700; background: var(--bg); transition: background 0.3s, border-color 0.3s; }
 .slot.you { background: var(--lime); border-color: var(--lime-dark); }
 .slot.filled { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .slot.empty { animation: slotpulse 1.5s ease-in-out infinite; }
-
-@keyframes slotpulse {
-  0%, 100% { border-color: var(--border); }
-  50% { border-color: var(--border-strong); }
-}
-
-.wait-bar-track {
-  height: 3px;
-  background: var(--border);
-  border-radius: 99px;
-  overflow: hidden;
-  margin-top: 1rem;
-}
-
-.wait-bar-fill {
-  height: 100%;
-  background: var(--ink);
-  border-radius: 99px;
-  width: 25%;
-  transition: width 0.5s ease;
-}
-
-.wait-hint {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--ink3);
-}
-
-.btn-cancel {
-  background: none;
-  border: 1px solid var(--border-strong);
-  color: var(--ink3);
-  padding: 0.55rem 1.25rem;
-  border-radius: 6px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  transition: color 0.12s, border-color 0.12s;
-  align-self: flex-start;
-}
-
+@keyframes slotpulse { 0%,100%{border-color:var(--border)} 50%{border-color:var(--border-strong)} }
+.wait-bar-track { height: 3px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 1rem; }
+.wait-bar-fill { height: 100%; background: var(--ink); border-radius: 99px; width: 25%; transition: width 0.5s ease; }
+.wait-hint { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--ink3); }
+.btn-cancel { background: none; border: 1px solid var(--border-strong); color: var(--ink3); padding: 0.55rem 1.25rem; border-radius: 6px; font-size: 0.82rem; cursor: pointer; font-family: 'Bricolage Grotesque', sans-serif; transition: color 0.12s, border-color 0.12s; align-self: flex-start; }
 .btn-cancel:hover { color: var(--ink); border-color: var(--ink); }
 
 .hero-right { padding-top: 1rem; }
-
-.demo-room {
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.demo-room-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.demo-room-id {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--ink3);
-}
-
-.demo-room-live {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.68rem;
-  color: var(--ink2);
-}
-
-.live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  animation: livepulse 1.2s ease-in-out infinite;
-}
-
-@keyframes livepulse {
-  0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
-}
-
-.demo-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--border);
-}
-
-.demo-cell {
-  background: var(--bg);
-  aspect-ratio: 4/3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  position: relative;
-}
-
+.demo-room { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; overflow: hidden; }
+.demo-room-header { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.demo-room-id { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--ink3); }
+.demo-room-live { display: flex; align-items: center; gap: 5px; font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--ink2); }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: livepulse 1.2s ease-in-out infinite; }
+@keyframes livepulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+.demo-cell { background: var(--bg); aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative; }
 .demo-cell:hover .vote-pill { opacity: 1; }
-
-.demo-avatar {
-  width: 40px; height: 40px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  font-weight: 700;
-}
-
-.demo-cell-name {
-  font-size: 0.7rem;
-  color: var(--ink3);
-  font-family: 'Space Mono', monospace;
-}
-
-.vote-pill {
-  position: absolute;
-  top: 8px; right: 8px;
-  background: var(--ink);
-  color: var(--bg);
-  font-size: 0.6rem;
-  font-family: 'Space Mono', monospace;
-  padding: 3px 8px;
-  border-radius: 99px;
-  opacity: 0;
-  transition: opacity 0.15s;
-  cursor: pointer;
-  border: none;
-}
-
+.demo-avatar { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 0.65rem; font-weight: 700; }
+.demo-cell-name { font-size: 0.7rem; color: var(--ink3); font-family: 'Space Mono', monospace; }
+.vote-pill { position: absolute; top: 8px; right: 8px; background: var(--ink); color: var(--bg); font-size: 0.6rem; font-family: 'Space Mono', monospace; padding: 3px 8px; border-radius: 99px; opacity: 0; transition: opacity 0.15s; cursor: pointer; border: none; }
 .vote-pill:hover { background: #c0392b; }
 .demo-you { background: #f0ffe0; }
 .demo-you .demo-avatar { background: var(--lime); color: var(--ink); }
 
-.strip {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  margin: 4rem 0 0;
-  display: flex;
-}
-
-.strip-item {
-  flex: 1;
-  padding: 1.75rem 2rem;
-  border-right: 1px solid var(--border);
-}
-
+.strip { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin: 4rem 0 0; display: flex; }
+.strip-item { flex: 1; padding: 1.75rem 2rem; border-right: 1px solid var(--border); }
 .strip-item:last-child { border-right: none; }
-
-.strip-num {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--ink3);
-  margin-bottom: 0.75rem;
-}
-
-.strip-title {
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.4rem;
-}
-
+.strip-num { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ink3); margin-bottom: 0.75rem; }
+.strip-title { font-size: 0.92rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
 .strip-desc { font-size: 0.78rem; color: var(--ink3); line-height: 1.55; }
 
-footer {
-  padding: 2rem 2.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--border);
-  margin-top: 4rem;
-  font-size: 0.8rem;
-  color: var(--ink3);
-}
-
+footer { padding: 2rem 2.5rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); margin-top: 4rem; font-size: 0.8rem; color: var(--ink3); }
 footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
 
-#roomPage {
-  display: none;
-  flex-direction: column;
-  min-height: calc(100vh - 65px);
-}
-
+#roomPage { display: none; flex-direction: column; min-height: calc(100vh - 65px); }
 #roomPage.active { display: flex; }
+.room-topbar { padding: 0.85rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.room-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--ink3); }
+.room-badge { display: flex; align-items: center; gap: 5px; background: var(--lime); padding: 3px 10px; border-radius: 99px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ink); font-weight: 700; }
+.room-content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; gap: 1.5rem; }
 
-.room-topbar {
-  padding: 0.85rem 2rem;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+#videoGrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; width: 100%; max-width: 900px; }
 
-.room-tag {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.7rem;
-  color: var(--ink3);
-}
-
-.room-badge {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  background: var(--lime);
-  padding: 3px 10px;
-  border-radius: 99px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.room-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  gap: 1.5rem;
-}
-
-#videoGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 10px;
-  width: 100%;
-  max-width: 900px;
-}
-
-.video-cell {
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  aspect-ratio: 16/10;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+.video-cell { background: var(--surface); border: 1px solid var(--border-strong); border-radius: 12px; aspect-ratio: 16/10; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .video-cell.local-cell { border-color: var(--lime-dark); background: #f0ffe0; }
-
-.video-cell video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 12px;
-}
-
-.video-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.video-av {
-  width: 52px; height: 52px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-
-.video-name {
-  font-family: 'Space Mono', monospace;
-  font-size: 0.65rem;
-  color: var(--ink3);
-}
-
-.vote-btn {
-  position: absolute;
-  top: 10px; right: 10px;
-  background: var(--ink);
-  color: var(--bg);
-  border: none;
-  border-radius: 6px;
-  padding: 5px 12px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.62rem;
-  cursor: pointer;
-  transition: background 0.12s;
-  opacity: 0;
-}
-
+.video-placeholder { display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 1; pointer-events: none; }
+.video-av { width: 52px; height: 52px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: 700; }
+.video-name { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ink3); }
+.vote-btn { position: absolute; top: 10px; right: 10px; background: var(--ink); color: var(--bg); border: none; border-radius: 6px; padding: 5px 12px; font-family: 'Space Mono', monospace; font-size: 0.62rem; cursor: pointer; transition: background 0.12s; opacity: 0; z-index: 2; }
 .video-cell:hover .vote-btn { opacity: 1; }
 .vote-btn:hover { background: #c0392b; }
-.vote-btn:disabled { background: var(--ink3); cursor: default; }
+.vote-btn:disabled { background: var(--ink3); cursor: default; opacity: 1; }
 
-.room-controls {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-}
-
-.ctrl-btn {
-  padding: 0.65rem 1.5rem;
-  border-radius: 8px;
-  font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.12s;
-  border: 1px solid var(--border-strong);
-  background: var(--surface);
-  color: var(--ink);
-}
-
+.room-controls { display: flex; gap: 12px; align-items: center; }
+.ctrl-btn { padding: 0.65rem 1.5rem; border-radius: 8px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: all 0.12s; border: 1px solid var(--border-strong); background: var(--surface); color: var(--ink); }
 .ctrl-btn:hover { background: var(--ink); color: var(--bg); }
-
-.ctrl-btn.danger {
-  border-color: #c0392b;
-  color: #c0392b;
-  background: none;
-}
-
+.ctrl-btn.danger { border-color: #c0392b; color: #c0392b; background: none; }
 .ctrl-btn.danger:hover { background: #c0392b; color: #fff; }
-.ctrl-btn.muted { opacity: 0.5; }
+.ctrl-btn.active-mute { background: var(--ink); color: var(--lime); border-color: var(--ink); }
 
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: var(--ink);
-  color: var(--bg);
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
-  transition: transform 0.3s;
-  z-index: 999;
-  white-space: nowrap;
-}
-
+.toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--ink); color: var(--bg); padding: 0.75rem 1.5rem; border-radius: 8px; font-family: 'Space Mono', monospace; font-size: 0.75rem; transition: transform 0.3s; z-index: 999; white-space: nowrap; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">
-    <div class="logo-mark"></div>
-    multoggle
-  </div>
+  <div class="logo"><div class="logo-mark"></div>multoggle</div>
   <div class="nav-stat">şu an <span id="liveCount">—</span> kişi online</div>
 </nav>
 
-<!-- LANDING -->
 <div id="landingPage">
   <div class="hero-left">
     <div class="hero-eyebrow">grup video chat · v0.1</div>
     <h1>Rastgele.<br><em>Gerçek.</em><br>Biraz kaotik.</h1>
-    <p class="hero-body">
-      Başla'ya bas. Sistem seni yabancılarla dolu bir odaya atar.
-      Konuş, eğlen — ya da gizlice oy vererek birini at.
-    </p>
-
-    <button class="btn-start" id="btnStart" onclick="joinQueue()">
-      Odaya gir
-      <div class="btn-arrow">→</div>
-    </button>
-
+    <p class="hero-body">Başla'ya bas. Sistem seni yabancılarla dolu bir odaya atar. Konuş, eğlen — ya da gizlice oy vererek birini at.</p>
+    <button class="btn-start" id="btnStart" onclick="joinQueue()">Odaya gir<div class="btn-arrow">→</div></button>
     <div class="waiting" id="waitingBox">
       <div class="wait-card">
         <div class="wait-top">
@@ -593,7 +131,7 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
             <div class="wait-label-sm">bekleyen</div>
             <div class="wait-num" id="waitNum">1 <span>/ ?</span></div>
           </div>
-          <div class="slots" id="slotRow">
+          <div class="slots">
             <div class="slot you">SEN</div>
             <div class="slot empty" id="s1"></div>
             <div class="slot empty" id="s2"></div>
@@ -601,9 +139,7 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
             <div class="slot empty" id="s4"></div>
           </div>
         </div>
-        <div class="wait-bar-track">
-          <div class="wait-bar-fill" id="wBar"></div>
-        </div>
+        <div class="wait-bar-track"><div class="wait-bar-fill" id="wBar"></div></div>
       </div>
       <div class="wait-hint" id="wHint">// oda dolunca bağlanılır</div>
       <button class="btn-cancel" onclick="leaveQueue()">vazgeç</button>
@@ -614,10 +150,7 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
     <div class="demo-room">
       <div class="demo-room-header">
         <div class="demo-room-id">oda #7291</div>
-        <div class="demo-room-live">
-          <div class="live-dot"></div>
-          4 kişi
-        </div>
+        <div class="demo-room-live"><div class="live-dot"></div>4 kişi</div>
       </div>
       <div class="demo-grid">
         <div class="demo-cell demo-you">
@@ -643,27 +176,11 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
     </div>
   </div>
 
-  <div class="strip" style="grid-column: 1/-1;">
-    <div class="strip-item">
-      <div class="strip-num">01</div>
-      <div class="strip-title">Rastgele oda</div>
-      <div class="strip-desc">3–5 kişi birikince oda açılır. Kimi bulacağını bilmiyorsun.</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-num">02</div>
-      <div class="strip-title">Gizli oylama</div>
-      <div class="strip-desc">3 oy = sessiz çıkış. Atılan kişi neden gittiğini bilmez.</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-num">03</div>
-      <div class="strip-title">Oda kapanmaz</div>
-      <div class="strip-desc">Biri gidince yerine yeni biri girer. Sohbet devam eder.</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-num">04</div>
-      <div class="strip-title">Hesap yok</div>
-      <div class="strip-desc">Kayıt yok, e-posta yok. Tıkla, gir, konuş.</div>
-    </div>
+  <div class="strip" style="grid-column:1/-1;">
+    <div class="strip-item"><div class="strip-num">01</div><div class="strip-title">Rastgele oda</div><div class="strip-desc">3–5 kişi birikince oda açılır. Kimi bulacağını bilmiyorsun.</div></div>
+    <div class="strip-item"><div class="strip-num">02</div><div class="strip-title">Gizli oylama</div><div class="strip-desc">3 oy = sessiz çıkış. Atılan kişi neden gittiğini bilmez.</div></div>
+    <div class="strip-item"><div class="strip-num">03</div><div class="strip-title">Oda kapanmaz</div><div class="strip-desc">Biri gidince yerine yeni biri girer. Sohbet devam eder.</div></div>
+    <div class="strip-item"><div class="strip-num">04</div><div class="strip-title">Hesap yok</div><div class="strip-desc">Kayıt yok, e-posta yok. Tıkla, gir, konuş.</div></div>
   </div>
 </div>
 
@@ -672,11 +189,10 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
   <span>© 2025 — ücretsiz · reklamsız değil ama neyse</span>
 </footer>
 
-<!-- ROOM PAGE -->
 <div id="roomPage">
   <div class="room-topbar">
     <div class="room-tag" id="roomTag">oda #——</div>
-    <div class="room-badge"><div class="live-dot"></div> <span id="roomUserCount">0</span> kişi</div>
+    <div class="room-badge"><div class="live-dot"></div><span id="roomUserCount">0</span> kişi</div>
   </div>
   <div class="room-content">
     <div id="videoGrid"></div>
@@ -691,108 +207,134 @@ footer span { font-family: 'Space Mono', monospace; font-size: 0.68rem; }
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
 const BACKEND = 'https://multoggle-backend-production.up.railway.app';
 const AGORA_APP_ID = '6cfb6d08fd3f421b99b2ffc90bf50966';
 
-let socket = null;
-let agoraClient = null;
-let localTracks = { audio: null, video: null };
-let myUid = null;
-let mySocketId = null;
-let currentRoomId = null;
-let isMuted = false;
-let isCamOff = false;
-let peers = new Map();
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+const S = {
+  socket: null,
+  agora: null,
+  audioTrack: null,
+  videoTrack: null,
+  myUid: null,
+  mySocketId: null,
+  roomId: null,
+  isMuted: false,
+  isCamOff: false,
+  peers: new Map(),       // socketId -> { uid, username }
+  agoraToSocket: new Map(), // agoraUid -> socketId
+  leaving: false,
+};
 
-// ─── SOCKET ───────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// SOCKET
+// ═══════════════════════════════════════════════
 function initSocket() {
-  socket = io(BACKEND, { transports: ['websocket'] });
+  if (S.socket) return;
+  S.socket = io(BACKEND, { transports: ['websocket'], reconnectionAttempts: 5 });
 
-  socket.on('connect', () => {
-    mySocketId = socket.id;
+  S.socket.on('connect', () => {
+    S.mySocketId = S.socket.id;
     showToast('Sunucuya bağlandı');
   });
 
-  socket.on('disconnect', () => showToast('Bağlantı kesildi'));
-
-  socket.on('queue:position', ({ waiting }) => {
-    updateWaitUI(waiting);
+  S.socket.on('disconnect', () => {
+    if (!S.leaving) showToast('Bağlantı kesildi');
   });
 
-  socket.on('room:joined', async ({ roomId, uid, username, peers: peerList }) => {
-    currentRoomId = roomId;
-    myUid = uid;
+  S.socket.on('queue:position', ({ waiting }) => updateWaitUI(waiting));
+
+  S.socket.on('room:joined', async ({ roomId, uid, peers }) => {
+    S.roomId = roomId;
+    S.myUid = uid;
+    S.peers.clear();
+    S.agoraToSocket.clear();
+
     document.getElementById('roomTag').textContent = `oda #${roomId}`;
-    await joinAgoraChannel(roomId, uid);
-    peerList.forEach(p => peers.set(p.socketId, p));
-    showRoom();
-    renderVideoGrid();
+
+    // 1. Önce UI'ı göster
+    showRoomUI();
+    // 2. Local cell DOM'a ekle
+    ensureLocalCell();
+    // 3. Agora'ya bağlan (local video artık oynatılabilir)
+    await joinAgora(roomId, uid);
+    // 4. Peer listesini yükle
+    peers.forEach(p => {
+      S.peers.set(p.socketId, p);
+      if (p.uid) S.agoraToSocket.set(p.uid, p.socketId);
+    });
+    // 5. Grid'i senkronize et
+    syncGrid();
   });
 
-  socket.on('room:users', ({ users }) => {
+  S.socket.on('room:users', ({ users }) => {
+    if (!S.roomId) return;
     document.getElementById('roomUserCount').textContent = users.length;
+
+    const activeIds = new Set(users.map(u => u.socketId));
 
     // Yeni gelenleri ekle
     users.forEach(u => {
-      if (u.socketId !== mySocketId && !peers.has(u.socketId)) {
-        peers.set(u.socketId, u);
+      if (u.socketId === S.mySocketId) return;
+      if (!S.peers.has(u.socketId)) {
+        S.peers.set(u.socketId, u);
+        if (u.uid) S.agoraToSocket.set(u.uid, u.socketId);
       }
     });
 
-    // Artık odada olmayanları temizle
-    const activeSocketIds = new Set(users.map(u => u.socketId));
-    peers.forEach((peer, socketId) => {
-      if (!activeSocketIds.has(socketId)) {
-        peers.delete(socketId);
-        // Agora UID'siyle hücreyi bul ve sil
-        const cell = document.getElementById('cell-' + peer.uid);
-        if (cell) cell.remove();
+    // Gitmiş olanları temizle
+    S.peers.forEach((peer, socketId) => {
+      if (!activeIds.has(socketId)) {
+        S.peers.delete(socketId);
+        S.agoraToSocket.delete(peer.uid);
+        removePeerCell(peer.uid);
       }
     });
 
-    renderVideoGrid();
+    syncGrid();
   });
 
-  socket.on('room:kicked', async () => {
+  S.socket.on('room:kicked', async () => {
     showToast('Yeni bir odaya bağlanıyorsunuz...');
-    await leaveAgoraChannel();
-    peers.clear();
-    currentRoomId = null;
-    setTimeout(() => joinQueue(), 1500);
+    await cleanupRoom();
+    setTimeout(joinQueue, 1500);
   });
 
-  socket.on('vote:cast', ({ votes, needed }) => {
+  S.socket.on('vote:cast', ({ votes, needed }) => {
     showToast(`Oy gönderildi (${votes}/${needed})`);
   });
 }
 
-// ─── QUEUE ────────────────────────────────────────────────
+// ═══════════════════════════════════════════════
+// QUEUE
+// ═══════════════════════════════════════════════
 function joinQueue() {
-  if (!socket) initSocket();
+  initSocket();
   document.getElementById('btnStart').classList.add('hidden');
   document.getElementById('waitingBox').classList.add('active');
-  socket.emit('queue:join');
+  S.socket.emit('queue:join');
 }
 
 function leaveQueue() {
-  socket.emit('queue:leave');
+  S.socket.emit('queue:leave');
   document.getElementById('waitingBox').classList.remove('active');
   document.getElementById('btnStart').classList.remove('hidden');
   resetWaitUI();
 }
 
 function updateWaitUI(count) {
-  document.getElementById('waitNum').innerHTML = count + ' <span>/ ?</span>';
+  document.getElementById('waitNum').innerHTML = `${count} <span>/ ?</span>`;
   document.getElementById('wBar').style.width = Math.min(count / 5 * 100, 95) + '%';
   document.getElementById('wHint').textContent = `// ${count} kişi bekliyor`;
-  const slotIds = ['s1','s2','s3','s4'];
-  slotIds.forEach((id, i) => {
+  ['s1','s2','s3','s4'].forEach((id, i) => {
     const el = document.getElementById(id);
-    if (i < count - 1) {
-      el.classList.remove('empty'); el.classList.add('filled'); el.textContent = '●';
-    } else {
-      el.className = 'slot empty'; el.textContent = '';
-    }
+    if (i < count - 1) { el.className = 'slot filled'; el.textContent = '●'; }
+    else { el.className = 'slot empty'; el.textContent = ''; }
   });
 }
 
@@ -806,175 +348,247 @@ function resetWaitUI() {
   });
 }
 
-// ─── AGORA ────────────────────────────────────────────────
-async function joinAgoraChannel(roomId, uid) {
-  agoraClient = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+// ═══════════════════════════════════════════════
+// AGORA
+// ═══════════════════════════════════════════════
+async function joinAgora(roomId, uid) {
+  try {
+    S.agora = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
-  agoraClient.on('user-published', async (user, mediaType) => {
-    await agoraClient.subscribe(user, mediaType);
-    if (mediaType === 'video') {
-      // Hücre henüz oluşmamışsa oluştur
-      let cell = document.getElementById('cell-' + user.uid);
-      if (!cell) {
-        cell = createPeerCell(user.uid, 'kullanıcı_' + user.uid, null);
-        document.getElementById('videoGrid').appendChild(cell);
+    S.agora.on('user-published', async (user, mediaType) => {
+      try {
+        await S.agora.subscribe(user, mediaType);
+        if (mediaType === 'video') {
+          const cell = getOrCreatePeerCell(user.uid);
+          hidePlaceholder(cell);
+          user.videoTrack.play(cell);
+        }
+        if (mediaType === 'audio') user.audioTrack.play();
+      } catch(e) { console.warn('subscribe hatası:', e); }
+    });
+
+    S.agora.on('user-unpublished', (user, mediaType) => {
+      if (mediaType === 'video') {
+        const cell = document.getElementById('cell-' + user.uid);
+        if (cell) showPlaceholder(cell);
       }
-      const placeholder = cell.querySelector('.video-placeholder');
-      if (placeholder) placeholder.style.display = 'none';
-      user.videoTrack.play(cell);
+    });
+
+    S.agora.on('user-left', (user) => {
+      // Agora bildirince de temizle (çift güvenlik)
+      const socketId = S.agoraToSocket.get(user.uid);
+      if (socketId) { S.peers.delete(socketId); S.agoraToSocket.delete(user.uid); }
+      removePeerCell(user.uid);
+    });
+
+    // Token al
+    const res = await fetch(`${BACKEND}/token?channel=${roomId}&uid=${uid}`);
+    if (!res.ok) throw new Error('Token alınamadı: ' + res.status);
+    const { token, appId } = await res.json();
+
+    await S.agora.join(appId, roomId, token, uid);
+
+    // Kanalda zaten olan kullanıcılar (geç katılım)
+    for (const user of S.agora.remoteUsers) {
+      try {
+        if (user.hasVideo) {
+          await S.agora.subscribe(user, 'video');
+          const cell = getOrCreatePeerCell(user.uid);
+          hidePlaceholder(cell);
+          user.videoTrack.play(cell);
+        }
+        if (user.hasAudio) {
+          await S.agora.subscribe(user, 'audio');
+          user.audioTrack.play();
+        }
+      } catch(e) { console.warn('geç katılım hatası:', e); }
     }
-    if (mediaType === 'audio') user.audioTrack.play();
-  });
 
-  agoraClient.on('user-unpublished', (user, mediaType) => {
-    if (mediaType === 'video') {
-      const cell = document.getElementById('cell-' + user.uid);
-      if (cell) {
-        const placeholder = cell.querySelector('.video-placeholder');
-        if (placeholder) placeholder.style.display = 'flex';
-      }
+    // Yerel track'leri oluştur ve yayınla
+    S.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    S.videoTrack = await AgoraRTC.createCameraVideoTrack();
+    await S.agora.publish([S.audioTrack, S.videoTrack]);
+
+    // Local video oynat (cell artık DOM'da)
+    const localCell = document.getElementById('local-cell');
+    if (localCell) {
+      hidePlaceholder(localCell);
+      S.videoTrack.play(localCell);
     }
-  });
 
-  agoraClient.on('user-left', (user) => {
-    removePeerCell(user.uid);
-  });
-
-  const res = await fetch(`${BACKEND}/token?channel=${roomId}&uid=${uid}`);
-  const { token, appId } = await res.json();
-
-  await agoraClient.join(appId, roomId, token, uid);
-
-  // *** DÜZELTME: Kanala geç katılanlar için mevcut kullanıcıları subscribe et ***
-  const remoteUsers = agoraClient.remoteUsers;
-  for (const user of remoteUsers) {
-    if (user.hasVideo) {
-      await agoraClient.subscribe(user, 'video');
-      let cell = document.getElementById('cell-' + user.uid);
-      if (!cell) {
-        cell = createPeerCell(user.uid, 'kullanıcı_' + user.uid, null);
-        document.getElementById('videoGrid').appendChild(cell);
-      }
-      const placeholder = cell.querySelector('.video-placeholder');
-      if (placeholder) placeholder.style.display = 'none';
-      user.videoTrack.play(cell);
-    }
-    if (user.hasAudio) {
-      await agoraClient.subscribe(user, 'audio');
-      user.audioTrack.play();
-    }
+  } catch(e) {
+    console.error('Agora hatası:', e);
+    showToast('Kamera/mikrofon hatası. İzin verdin mi?');
   }
-
-  localTracks.audio = await AgoraRTC.createMicrophoneAudioTrack();
-  localTracks.video = await AgoraRTC.createCameraVideoTrack();
-  await agoraClient.publish([localTracks.audio, localTracks.video]);
-
-  const localCell = document.getElementById('local-cell');
-  if (localCell) localTracks.video.play(localCell);
 }
 
-async function leaveAgoraChannel() {
-  if (localTracks.audio) { localTracks.audio.stop(); localTracks.audio.close(); }
-  if (localTracks.video) { localTracks.video.stop(); localTracks.video.close(); }
-  localTracks = { audio: null, video: null };
-  if (agoraClient) { await agoraClient.leave(); agoraClient = null; }
+async function leaveAgora() {
+  try { if (S.audioTrack) { S.audioTrack.stop(); S.audioTrack.close(); S.audioTrack = null; } } catch(e) {}
+  try { if (S.videoTrack) { S.videoTrack.stop(); S.videoTrack.close(); S.videoTrack = null; } } catch(e) {}
+  try { if (S.agora) { await S.agora.leave(); S.agora = null; } } catch(e) {}
 }
 
-// ─── ROOM UI ──────────────────────────────────────────────
-function showRoom() {
-  document.getElementById('landingPage').style.display = 'none';
-  document.querySelector('footer').style.display = 'none';
-  document.getElementById('roomPage').classList.add('active');
+// ═══════════════════════════════════════════════
+// GRID
+// ═══════════════════════════════════════════════
+function ensureLocalCell() {
+  if (document.getElementById('local-cell')) return;
+  const cell = document.createElement('div');
+  cell.className = 'video-cell local-cell';
+  cell.id = 'local-cell';
+  cell.innerHTML = `<div class="video-placeholder"><div class="video-av" style="background:var(--lime);color:var(--ink);">SEN</div><div class="video-name">sen</div></div>`;
+  document.getElementById('videoGrid').appendChild(cell);
 }
 
-function createPeerCell(uid, username, socketId) {
+function getOrCreatePeerCell(agoraUid) {
+  let cell = document.getElementById('cell-' + agoraUid);
+  if (!cell) {
+    // peers'dan bilgi al
+    const socketId = S.agoraToSocket.get(agoraUid);
+    const peer = socketId ? S.peers.get(socketId) : null;
+    const username = peer ? peer.username : 'kullanıcı_' + agoraUid;
+    cell = buildPeerCell(agoraUid, username, socketId);
+    document.getElementById('videoGrid').appendChild(cell);
+  }
+  return cell;
+}
+
+function buildPeerCell(agoraUid, username, socketId) {
   const cell = document.createElement('div');
   cell.className = 'video-cell';
-  cell.id = 'cell-' + uid;
+  cell.id = 'cell-' + agoraUid;
   const initials = username.slice(-3).toUpperCase();
-  const voteAttr = socketId ? `onclick="castVote('${socketId}', this)"` : '';
   cell.innerHTML = `
     <div class="video-placeholder">
       <div class="video-av" style="background:#edeae1;color:var(--ink);">${initials}</div>
       <div class="video-name">${username}</div>
     </div>
-    <button class="vote-btn" ${voteAttr}>oy ver</button>`;
+    <button class="vote-btn" data-socket="${socketId || ''}" onclick="castVote(this)">oy ver</button>`;
+  if (socketId) S.agoraToSocket.set(agoraUid, socketId);
   return cell;
 }
 
-function renderVideoGrid() {
-  const grid = document.getElementById('videoGrid');
-
-  if (!document.getElementById('local-cell')) {
-    const cell = document.createElement('div');
-    cell.className = 'video-cell local-cell';
-    cell.id = 'local-cell';
-    cell.innerHTML = `
-      <div class="video-placeholder">
-        <div class="video-av" style="background:var(--lime);color:var(--ink);">SEN</div>
-        <div class="video-name">sen</div>
-      </div>`;
-    grid.appendChild(cell);
-    if (localTracks.video) localTracks.video.play(cell);
-  }
-
-  peers.forEach((peer, socketId) => {
-    const cellId = 'cell-' + peer.uid;
-    if (document.getElementById(cellId)) return;
-    const cell = createPeerCell(peer.uid, peer.username, socketId);
-    grid.appendChild(cell);
+function syncGrid() {
+  S.peers.forEach((peer, socketId) => {
+    if (!document.getElementById('cell-' + peer.uid)) {
+      const cell = buildPeerCell(peer.uid, peer.username, socketId);
+      document.getElementById('videoGrid').appendChild(cell);
+    }
+    // Ters harita güncelle
+    if (peer.uid) S.agoraToSocket.set(peer.uid, socketId);
   });
 }
 
-function castVote(targetSocketId, btn) {
-  socket.emit('vote:kick', { targetSocketId });
-  btn.textContent = '✓ oylandı';
-  btn.disabled = true;
-  btn.style.opacity = '1';
-  btn.style.background = '#c0392b';
+function removePeerCell(agoraUid) {
+  const cell = document.getElementById('cell-' + agoraUid);
+  if (!cell) return;
+  cell.style.transition = 'opacity 0.3s';
+  cell.style.opacity = '0';
+  setTimeout(() => { if (cell.parentNode) cell.remove(); }, 320);
 }
 
-async function leaveRoom() {
-  socket.emit('room:leave');
-  await leaveAgoraChannel();
-  peers.clear();
-  currentRoomId = null;
-  document.getElementById('videoGrid').innerHTML = '';
+function hidePlaceholder(cell) {
+  const ph = cell.querySelector('.video-placeholder');
+  if (ph) ph.style.display = 'none';
+}
+
+function showPlaceholder(cell) {
+  const ph = cell.querySelector('.video-placeholder');
+  if (ph) ph.style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════
+// ROOM ACTIONS
+// ═══════════════════════════════════════════════
+function showRoomUI() {
+  document.getElementById('landingPage').style.display = 'none';
+  document.querySelector('footer').style.display = 'none';
+  document.getElementById('roomPage').classList.add('active');
+}
+
+function hideRoomUI() {
   document.getElementById('roomPage').classList.remove('active');
   document.getElementById('landingPage').style.display = '';
   document.querySelector('footer').style.display = '';
+}
+
+async function cleanupRoom() {
+  await leaveAgora();
+  S.peers.clear();
+  S.agoraToSocket.clear();
+  S.roomId = null;
+  S.myUid = null;
+  S.isMuted = false;
+  S.isCamOff = false;
+  document.getElementById('videoGrid').innerHTML = '';
+  document.getElementById('roomUserCount').textContent = '0';
+  document.getElementById('muteBtn').textContent = '🎤 Sessiz';
+  document.getElementById('muteBtn').classList.remove('active-mute');
+  document.getElementById('camBtn').textContent = '📷 Kamera';
+  document.getElementById('camBtn').classList.remove('active-mute');
+}
+
+async function leaveRoom() {
+  S.leaving = true;
+  S.socket.emit('room:leave');
+  await cleanupRoom();
+  S.leaving = false;
+  hideRoomUI();
   document.getElementById('btnStart').classList.remove('hidden');
   document.getElementById('waitingBox').classList.remove('active');
   resetWaitUI();
 }
 
+function castVote(btn) {
+  const targetSocketId = btn.dataset.socket;
+  if (!targetSocketId) return;
+  S.socket.emit('vote:kick', { targetSocketId });
+  btn.textContent = '✓ oylandı';
+  btn.disabled = true;
+  btn.style.background = '#c0392b';
+}
+
 function toggleMute() {
-  if (!localTracks.audio) return;
-  isMuted = !isMuted;
-  localTracks.audio.setEnabled(!isMuted);
-  document.getElementById('muteBtn').textContent = isMuted ? '🔇 Sesi aç' : '🎤 Sessiz';
-  document.getElementById('muteBtn').classList.toggle('muted', isMuted);
+  if (!S.audioTrack) return;
+  S.isMuted = !S.isMuted;
+  S.audioTrack.setEnabled(!S.isMuted);
+  const btn = document.getElementById('muteBtn');
+  btn.textContent = S.isMuted ? '🔇 Sesi aç' : '🎤 Sessiz';
+  btn.classList.toggle('active-mute', S.isMuted);
 }
 
 function toggleCam() {
-  if (!localTracks.video) return;
-  isCamOff = !isCamOff;
-  localTracks.video.setEnabled(!isCamOff);
-  document.getElementById('camBtn').textContent = isCamOff ? '📷 Kamerayı aç' : '📷 Kamera';
-  document.getElementById('camBtn').classList.toggle('muted', isCamOff);
+  if (!S.videoTrack) return;
+  S.isCamOff = !S.isCamOff;
+  S.videoTrack.setEnabled(!S.isCamOff);
+  const btn = document.getElementById('camBtn');
+  btn.textContent = S.isCamOff ? '📷 Kamerayı aç' : '📷 Kamera';
+  btn.classList.toggle('active-mute', S.isCamOff);
+
+  // Kamera kapalıyken local placeholder göster
+  const localCell = document.getElementById('local-cell');
+  if (localCell) {
+    if (S.isCamOff) showPlaceholder(localCell);
+    else { hidePlaceholder(localCell); if (S.videoTrack) S.videoTrack.play(localCell); }
+  }
 }
 
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+let toastTimer = null;
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
 
 let lc = 847 + Math.floor(Math.random() * 200);
 document.getElementById('liveCount').textContent = lc.toLocaleString('tr-TR');
 setInterval(() => {
-  lc += Math.floor(Math.random() * 5) - 2;
+  lc = Math.max(100, lc + Math.floor(Math.random() * 5) - 2);
   document.getElementById('liveCount').textContent = lc.toLocaleString('tr-TR');
 }, 3000);
 </script>
